@@ -24,6 +24,12 @@ require("./config/routes")(router);
 // designate public folder as static directory
 app.use(express.static(__dirname + "/public"));
 
+// connect handlebars to express app
+app.engine("handlebars", expressHandlebars({
+  defaultLayout: "main"
+}));
+app.set("view engine", "handlebars");
+
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json());
 
