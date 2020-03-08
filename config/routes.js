@@ -4,11 +4,11 @@
 var scrape = require("../scripts/scrape");
 
 // bring headlines and notes from the controller
-var headlinesController = require("../controller.headlines");
+var headlinesController = require("../controllers/headlines");
 var notesController = require("../controllers/notes");
 
 module.exports = function (router) {
-  
+
   // route to render homepage
   router.get("/", function (req, res) {
     res.render("home");
@@ -22,6 +22,7 @@ module.exports = function (router) {
   // router get api/fetch and run function
   router.get("/api/fetch", function (req, res) {
     // run fetch to message user
+  
     headlinesController.fetch(function (err, docs) {
       // no new articles are no articles at all alert user 
       if (!docs || docs.insertedCount === 0) {
@@ -62,38 +63,40 @@ module.exports = function (router) {
   });
 
   // create a route to update headlines
-  router.patch("/api/headlines", function(req, res) {
-    headlinesController.update(req.body, function(err, data) {
+  router.put("/api/headlines", function (req, res) {
+    console.log('UPDATING', req.body)
+  
+    headlinesController.update(req.body, function (err, data) {
       res.json(data);
     });
   });
 
   // route for grabbing notes associated with an article
-  router.get("/api/notes/:headline_id?", function(req, res) {
+  router.get("/api/notes/:headline_id?", function (req, res) {
     var query = {};
     if (req.params.headline_id) {
       query._id = req.params.headline_id;
     }
 
-    notesController.get(query, function(err, data) {
+    notesController.get(query, function (err, data) {
       res.json(data);
     });
   });
 
   // router for deleting notes
-  router.delete("/api/notes/:id", function(req, res) {
+  router.delete("/api/notes/:id", function (req, res) {
     var query = {};
     // delete function based on users choice
     query._id = req.params.id;
-    notesController.delete(query, function(err, data) {
+    notesController.delete(query, function (err, data) {
       res.json(data);
     });
   });
 
   // router for posting new notes to articles
-  router.post("/api/notes", function(req, res) {
+  router.post("/api/notes", function (req, res) {
     // runs save function and uses what user sent as the request body, returns data in json to display in front end
-    notesController.save(req.body, function(data) {
+    notesController.save(req.body, function (data) {
       res.json(data);
     });
   });
