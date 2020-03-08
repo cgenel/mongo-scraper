@@ -21,13 +21,13 @@ module.exports = {
       }
 
       // mongo function to grab headline and insert many articles into the collection, (err, docs) will skip over errors 
-      Headline.collections.insertMany(articles, {ordered:false}, function(err, docs) {
+      Headline.collection.insertMany(articles, {ordered:false}, function(err, docs) {
         cb(err, docs);
       });
     });
   },
 
-  // delete propert to remove articles
+  // delete propery to remove articles
   delete: function(query, cb) {
     Headline.remove(query, cb);
   },
@@ -43,7 +43,14 @@ module.exports = {
   },
 
   // function to update new articles that are scraped with relevant id and any information
-  update: function(err, cb) {
-    Headline.update({_id: query._id}, {$set: query}, {}, cb);
+  update: function(query, cb) {
+    console.log('UPDATING FROM CONTROLLER')
+    if(query) {
+      Headline.update({_id: query._id}, {
+        $set: query
+      }, {}, cb);
+    } else {
+      console.log('NO QUERY SPECIFIED')
+    }
   }
 }
