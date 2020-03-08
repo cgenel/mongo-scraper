@@ -51,6 +51,6 @@ module.exports = {
       }, {}, cb);
     } else {
       console.log('NO QUERY SPECIFIED')
-    }
+    };
   }
 }

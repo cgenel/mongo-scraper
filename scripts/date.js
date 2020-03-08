@@ -5,7 +5,7 @@ var makeDate = function() {
 
   // add month date and year
   formattedDate += (d.getMonth() + 1) + "_";
-  fomattedDate += (d.getDate() + "_");
+  formattedDate += (d.getDate() + "_");
   formattedDate += d.getFullYear();
 
   return formattedDate;
