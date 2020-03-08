@@ -1,5 +1,3 @@
-const e = require("express");
-
 $(document).ready(function () {
   // setting reference to the article-container div where all dynamic content will be displayed
   var articleContainer = $(".article-container");
@@ -18,7 +16,7 @@ $(document).ready(function () {
     articleContainer.empty();
     $.get("/api/headlines?saved=true").then(function(data){
       // if there are headlines then render to the page
-      if (date && data.length) {
+      if (data && data.length) {
         renderArticles(data);
       } else {
         // else render "no articles" message
@@ -49,9 +47,10 @@ $(document).ready(function () {
         "<div class='panel-heading'>",
         "<h3>",
         article.headline,
-        "<a class='btn btn-success save'>",
-        "Save Article",
+        "<a class='btn btn-danger delete'>",
+        "Delete From Saved",
         "</a>",
+        "<a class='btn btn-info notes'>Article Notes</a>",
         "</h3>",
         "</div>",
         "<div class='panel-body'>",
@@ -154,7 +153,7 @@ $(document).ready(function () {
         currentArticle._id,
         "</h4>",
         "<hr />",
-        "ul class='list-group note-container'>",
+        "<ul class='list-group note-container'>",
         "</ul>",
         "<textarea placeholder='New Note' rows='4' cols='60'></textarea>",
         "<button class='btn btn-success save'>Save Note</button>",
@@ -166,9 +165,9 @@ $(document).ready(function () {
         message: modalText,
         closeButton: true
       });
-      var NoteData = {
+      var noteData = {
         _id: currentArticle._id,
-        notes:data || []
+        notes: data || []
       };
       // for when trying to add a new note
       $(".btn.save").data("article", noteData);
