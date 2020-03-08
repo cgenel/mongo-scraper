@@ -1,14 +1,13 @@
-import { Aggregate } from "mongoose";
-
 $(document).ready(function () {
   // setting reference to the article-container div where all dynamic content will be displayed
   var articleContainer = $(".article-container");
 
   // add event listeners to any dynamically generated 'save article' & add "scrape new article" buttons
   $(document).on("click", ".btn.save", handleArticleSave);
+
   $(document).on("click", ".scrape-new", handleArticleScrape);
 
-  // when page is rerady run the initPage function
+  // when page is ready run the initPage function
   initPage();
 
   function initPage() {
@@ -41,7 +40,7 @@ $(document).ready(function () {
     articleContainer.append(articlePanels);
   }
 
-  // function to take in json object for article headlin
+  // function to take in json object for article headline
   function createPanel(article) {
     // construct jquery element containing all formatted html for article panel
     var panel =
@@ -90,14 +89,21 @@ $(document).ready(function () {
   }
 
   // function triggered when user wants to save an article
-  function handleArticleSave() {
+  function handleArticleSave(e) {
+    e.preventDefault();
+    console.log('SAVING THIS ARTICLE')
     // retrieve the object containing the headline id
     var articleToSave = $(this).parents(".panel").data();
+    console.log('ARTICLE TO SAVE',articleToSave)
+
+    $(this).parents(".panel").remove();
+
+
     articleToSave.saved = true;
 
     // using patch method for updating to en existing record in collection
     $.ajax({
-      method: "PATCH",
+      method: "PUT",
       url: "/api/headlines",
       data: articleToSave
     })
@@ -115,6 +121,7 @@ $(document).ready(function () {
 
     $.get("/api/fetch")
       .then(function (data) {
+        console.log(data);
         // if successfully scraped new articles then re render articles to the page 
         initPage();
         // let the user know how many new unique articles were saved with an alert
