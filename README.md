@@ -1,7 +1,7 @@
 # mongo-scraper
 > A WSJ news-article scraping-website utilizing MongoDB, Mongoose, and Cheerio.
 
-## Tchnologies
+## Technologies
 - Node
 - Express
 - Handlebars
